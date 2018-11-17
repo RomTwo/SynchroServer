@@ -58,12 +58,6 @@ public class File {
         return false;
     }
 
-    /**
-     * Sauvegarde du fichier sur le disque
-     */
-    public void save() {
-
-    }
 
 
 }
