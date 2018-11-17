@@ -7,13 +7,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 /**
- * Thread lauched for each client
- *
- * @author pmeseure
+ * Thread lancé pour chaque client
  */
 class ServerProcess implements Runnable {
     /**
-     * Socket towards the current client
+     * Socket vers le client courant
      */
     private Socket client_socket;
 
@@ -22,7 +20,7 @@ class ServerProcess implements Runnable {
     }
 
     /**
-     * main routine
+     * Routine principale
      */
     @Override
     public void run() {
@@ -44,9 +42,7 @@ class ServerProcess implements Runnable {
 }
 
 /**
- * Server main class
- *
- * @author pmeseure
+ * Classe principale Server
  */
 public class Server {
     static public void launch(int port) {
