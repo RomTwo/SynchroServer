@@ -1,3 +1,4 @@
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
@@ -34,6 +35,17 @@ class ServerProcess implements Runnable {
             // and send response to output stream
             DataInputStream dataInputStream = new DataInputStream(input);
             DataOutputStream dataOutputStream = new DataOutputStream(output);
+            
+            byte[] buffer = new byte[512];
+            int numbytes = input.read(buffer);//Lecture du buffer sur l entree
+            String message = new String(buffer, 0, numbytes, "UTF-8");//Recuperation du message sour la forme d un string
+            System.out.println("Reception du message envoye par le client :");
+            System.out.println(message);
+            System.out.println("Envoi de la reponse au client");
+            String reponseMessage = "Vous etes bien connecte au serveur";
+            byte[] reponse = reponseMessage.getBytes("UTF-8");//Encodage de la reponse en UTF-8
+            output.write(reponse);//Ecriture du buffer sur la sortie
+            System.out.println("Message envoye !");
 
         } catch (Exception e) {
             e.printStackTrace(System.err);
@@ -53,7 +65,6 @@ public class Server {
             // Create socket to get requests for all clients
             listen_socket = new ServerSocket(port, 10, iplocal);
             System.out.println("Server is waiting...");
-
             // Infinite loop to get requests sequentially
             while (true) {
                 Socket socket;
@@ -75,6 +86,6 @@ public class Server {
             System.exit(1);
         }
         System.out.println("Launching of the server...");
-        launch(80);
+        launch(12345);
     }
 }
