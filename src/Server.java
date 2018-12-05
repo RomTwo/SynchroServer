@@ -1,6 +1,8 @@
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
@@ -36,11 +38,30 @@ class ServerProcess implements Runnable {
             DataInputStream dataInputStream = new DataInputStream(input);
             DataOutputStream dataOutputStream = new DataOutputStream(output);
             
-            byte[] buffer = new byte[512];
+            /*byte[] buffer = new byte[512];
             int numbytes = input.read(buffer);//Lecture du buffer sur l entree
             String message = new String(buffer, 0, numbytes, "UTF-8");//Recuperation du message sour la forme d un string
             System.out.println("Reception du message envoye par le client :");
-            System.out.println(message);
+            System.out.println(message);*/
+            
+            FileOutputStream fos = null;
+            BufferedOutputStream bos = null;
+            int current = 0;
+            byte[] buffer = new byte[512];
+            String file = "...";
+            fos = new FileOutputStream(file);
+            bos = new BufferedOutputStream(fos);
+            int bytesRead = input.read(buffer,0,buffer.length);
+            current = bytesRead;
+
+            do {
+               bytesRead = input.read(buffer, current, (buffer.length-current));
+               if(bytesRead >= 0) current += bytesRead;
+            } while(bytesRead > -1);
+            bos.write(buffer, 0 , current);
+            bos.flush();
+            System.out.println("File " + file
+                + " downloaded (" + current + " bytes read)");
             System.out.println("Envoi de la reponse au client");
             String reponseMessage = "Vous etes bien connecte au serveur";
             byte[] reponse = reponseMessage.getBytes("UTF-8");//Encodage de la reponse en UTF-8
@@ -62,6 +83,7 @@ public class Server {
             ServerSocket listen_socket;
             // get server's local address (Not necessary)
             InetAddress iplocal = InetAddress.getLocalHost();
+            System.out.println(iplocal);
             // Create socket to get requests for all clients
             listen_socket = new ServerSocket(port, 10, iplocal);
             System.out.println("Server is waiting...");
