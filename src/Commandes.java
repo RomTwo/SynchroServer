@@ -12,7 +12,12 @@ public enum Commandes {
     SRC("src"),
     DEST("dest"),
     SENDALL("sendall"),
-    RECVALL("recvall");
+    RECVALL("recvall"),
+    CREATE("create"),
+    LOAD("load"),
+    EDIT("edit"),
+    HELP("help"),
+    BYE("bye");
 
     /**
      * Nom de la commande (taper par le client)
