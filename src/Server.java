@@ -5,6 +5,7 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -48,7 +49,7 @@ class ServerProcess implements Runnable {
             BufferedOutputStream bos = null;
             int current = 0;
             byte[] buffer = new byte[512];
-            String file = "...";
+            String file = "noel.png";
             fos = new FileOutputStream(file);
             bos = new BufferedOutputStream(fos);
             int bytesRead = input.read(buffer,0,buffer.length);
