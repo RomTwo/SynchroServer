@@ -1,3 +1,14 @@
+/**
+ * \file Server.java
+ * \package Programme
+ * \author Groupe1
+ * \version 1
+ * \date 10/12/2018
+ *
+ * Programme qui permet de gérer la partie 'serveur' de la synchronisation de fichier
+ *
+ */
+
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -16,36 +27,48 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * Thread lancé pour chaque client
+ * \class ServerProcess
+ * \brief Classe representant le serveur.
+ *
+ *  La classe permet d'effectuer des actions pour un client. 
+ *  Un thread est lancé pour chaque client de connecté sur le serveur.
+ *  Cette classe implémente l'interface Runnable.
  */
 class ServerProcess implements Runnable {
-    /**
-     * Socket vers le client courant
-     */
-    private Socket client_socket;
+    
+    private Socket client_socket;/**< Déclaration de la variable 'client_socket' qui correspond au socket pour le client courant. */
 
+    /**
+	 *  \fn ServerProcess(Socket socket)
+	 *  \brief Constructeur
+	 *  
+	 *  Ce contructeur du processus du serveur permet d'initialiser la valeur de la socket client.
+	 *  Elle affecte la valeur 'socket' qui est passée en paramètre à la valeur de 'client_socket'.
+	 *
+	 *  \param socket : Socket qui correspond à la socket accepté pour la connexion au serveur.
+	 * */
     public ServerProcess(Socket socket) {
         client_socket = socket;
     }
 
     /**
-     * Routine principale
-     */
+	 *  \fn run()
+	 *  \brief Définition de la méthode 'run'
+	 *  
+	 *  Cette fonction correspond à la routine principale du serveur.
+	 *  Elle permet de recevoir un fichier sous format binaire et lit ces données dans un buffer pour réecrire ces données dans un fichier.
+	 *  Elle renvoie un message de réponse au client pour indiquer que le fichier à bien été reçu.
+	 *  Ce processus (routine) s'arrête une fois que l'utilisateur du serveur saisit la commande 'BYE'.
+	 *  
+	 * */
     @Override
     public void run() {
         try {
             InputStream input = client_socket.getInputStream();
             OutputStream output = client_socket.getOutputStream();
-            System.out.println("Connexion request from " + client_socket.getInetAddress()
-                    + ":" + client_socket.getPort());
+            System.out.println("Connexion request from " + client_socket.getInetAddress() + ":" + client_socket.getPort());
             DataInputStream dataInputStream = new DataInputStream(input);
             DataOutputStream dataOutputStream = new DataOutputStream(output);
-
-            /*byte[] buffer = new byte[512];
-            int numbytes = input.read(buffer);//Lecture du buffer sur l entree
-            String message = new String(buffer, 0, numbytes, "UTF-8");//Recuperation du message sour la forme d un string
-            System.out.println("Reception du message envoye par le client :");
-            System.out.println(message);*/
 
             FileOutputStream fos = null;
             BufferedOutputStream bos = null;
@@ -66,7 +89,7 @@ class ServerProcess implements Runnable {
             System.out.println("File " + file
                     + " downloaded (" + current + " bytes read)");
             System.out.println("Envoi de la reponse au client");
-            String reponseMessage = "Vous etes bien connecte au serveur";
+            String reponseMessage = "Fichier bien reçu";
             byte[] reponse = reponseMessage.getBytes("UTF-8");//Encodage de la reponse en UTF-8
             output.write(reponse);//Ecriture du buffer sur la sortie
             System.out.println("Message envoye !");
@@ -89,6 +112,15 @@ class ServerProcess implements Runnable {
         }
     }
 
+    /**
+	 *  \fn archive(Fichier file)
+	 *  \brief Définition de la méthode 'archive'
+	 *  
+	 *  Cette fonction permet d'archiver un fichier passé en paramètre.
+	 *  
+	 *  \throws IOException lève une exception si le nom du fichier est introuvable.
+	 *  
+	 * */
     public void archive(Fichier file) throws IOException {
         Path currentPath = Paths.get(file.getAbsolutePath());
         int nb = file.nbArchive();
@@ -136,6 +168,18 @@ class ServerProcess implements Runnable {
         Files.copy(currentPath, currentPath.resolveSibling(name));
     }
 
+    /**
+	 *  \fn communicate(Commandes op)
+	 *  \brief Définition de la méthode 'communicate'
+	 *  
+	 *  Cette fonction permet de retourner un booleen qui signifie si la commande saisie par l'utilisateur du serveur est 'BYE'.
+	 *  Elle initialise un booleen 'res' à false et effectue une condition 'switch-case' pour évaluer chaque cas possible d'opérations.
+	 *  Si l'opération (qui correspond à une commande) est un 'BYE' alors le booléen devient true et en retourne le résultat.
+	 *  
+	 *  \param op : Commande qui correspond à une opération de l'utilisateur du serveur.
+	 *  \return La valeur du booléen 'res' qui signifie s'il faut arreter le serveur.
+	 *  
+	 * */
     private static boolean communicate(Commandes op) {
         boolean res = false;
 
@@ -196,9 +240,23 @@ class ServerProcess implements Runnable {
 }
 
 /**
- * Classe principale Server
+ * \class Server
+ * \brief Classe representant un serveur.
+ *
+ *  La classe contient une boucle principale (main) qui executera le programme.
  */
 public class Server {
+	
+	/**
+	 *  \fn launch(int port)
+	 *  \brief Définition de la méthode 'launch'
+	 *  
+	 *  Cette classe permet de lancer le serveur sur l'adresse local de la machine et attend une connexion d'un client.
+	 *  Lorsque ce client se connecte au serveur, un thread est lancé pour ensuite lancer la fonction 'run' de la classe 'ServerProcess'.
+	 *  
+	 *  \param port : Entier correspondant au port qui sera utilisé lors de la connection entre le serveur et le client.
+	 *  
+	 * */
     static public void launch(int port) {
         try {
             ServerSocket listen_socket;
@@ -223,6 +281,16 @@ public class Server {
         }
     }
 
+    /**
+	 *  \fn main(String[] args)
+	 *  \brief Fonction principale
+	 *  
+	 *  Cette fonction est la fonction principale qui sera executé au lancement du programme.
+	 *  Elle appelle la fonction 'launch' après avoir verifier qu'il n'y avait pas d'arguments.
+	 *
+	 *  \param args : Arguments du programme
+	 *  
+	 * */
     public static void main(String[] args) {
         if (args.length > 0) {
             System.err.println("Usage: java " + Server.class.getName());
