@@ -4,9 +4,8 @@
  * \author Groupe1
  * \version 1
  * \date 10/12/2018
- *
+ * <p>
  * Programme qui permet de gérer la partie 'serveur' de la synchronisation de fichier
- *
  */
 
 import java.io.BufferedOutputStream;
@@ -29,38 +28,37 @@ import java.util.ArrayList;
 /**
  * \class ServerProcess
  * \brief Classe representant le serveur.
- *
- *  La classe permet d'effectuer des actions pour un client. 
- *  Un thread est lancé pour chaque client de connecté sur le serveur.
- *  Cette classe implémente l'interface Runnable.
+ * <p>
+ * La classe permet d'effectuer des actions pour un client.
+ * Un thread est lancé pour chaque client de connecté sur le serveur.
+ * Cette classe implémente l'interface Runnable.
  */
 class ServerProcess implements Runnable {
-    
+
     private Socket client_socket;/**< Déclaration de la variable 'client_socket' qui correspond au socket pour le client courant. */
 
     /**
-	 *  \fn ServerProcess(Socket socket)
-	 *  \brief Constructeur
-	 *  
-	 *  Ce contructeur du processus du serveur permet d'initialiser la valeur de la socket client.
-	 *  Elle affecte la valeur 'socket' qui est passée en paramètre à la valeur de 'client_socket'.
-	 *
-	 *  \param socket : Socket qui correspond à la socket accepté pour la connexion au serveur.
-	 * */
+     * \fn ServerProcess(Socket socket)
+     * \brief Constructeur
+     * <p>
+     * Ce contructeur du processus du serveur permet d'initialiser la valeur de la socket client.
+     * Elle affecte la valeur 'socket' qui est passée en paramètre à la valeur de 'client_socket'.
+     * <p>
+     * \param socket : Socket qui correspond à la socket accepté pour la connexion au serveur.
+     */
     public ServerProcess(Socket socket) {
         client_socket = socket;
     }
 
     /**
-	 *  \fn run()
-	 *  \brief Définition de la méthode 'run'
-	 *  
-	 *  Cette fonction correspond à la routine principale du serveur.
-	 *  Elle permet de recevoir un fichier sous format binaire et lit ces données dans un buffer pour réecrire ces données dans un fichier.
-	 *  Elle renvoie un message de réponse au client pour indiquer que le fichier à bien été reçu.
-	 *  Ce processus (routine) s'arrête une fois que l'utilisateur du serveur saisit la commande 'BYE'.
-	 *  
-	 * */
+     * \fn run()
+     * \brief Définition de la méthode 'run'
+     * <p>
+     * Cette fonction correspond à la routine principale du serveur.
+     * Elle permet de recevoir un fichier sous format binaire et lit ces données dans un buffer pour réecrire ces données dans un fichier.
+     * Elle renvoie un message de réponse au client pour indiquer que le fichier à bien été reçu.
+     * Ce processus (routine) s'arrête une fois que l'utilisateur du serveur saisit la commande 'BYE'.
+     */
     @Override
     public void run() {
         try {
@@ -113,20 +111,19 @@ class ServerProcess implements Runnable {
     }
 
     /**
-	 *  \fn archive(Fichier file)
-	 *  \brief Définition de la méthode 'archive'
-	 *  
-	 *  Cette fonction permet d'archiver un fichier passé en paramètre.
-	 *  
-	 *  \throws IOException lève une exception si le nom du fichier est introuvable.
-	 *  
-	 * */
+     * \fn archive(Fichier file)
+     * \brief Définition de la méthode 'archive'
+     * <p>
+     * Cette fonction permet d'archiver un fichier passé en paramètre.
+     * <p>
+     * \throws IOException lève une exception si le nom du fichier est introuvable.
+     */
     public void archive(Fichier file) throws IOException {
         Path currentPath = Paths.get(file.getAbsolutePath());
         int nb = file.nbArchive();
         String name = file.getNom() + "_" + nb + "." + file.getExtension();
-        if (nb == 5) {
-            for (int i = 1; i < 6; i++) {
+        if (nb == Fichier.MAX_ARCHIVE) {
+            for (int i = 1; i <= Fichier.MAX_ARCHIVE; i++) {
                 Fichier oldFile = file.getArchive(i);
                 if (i == 1) {
                     oldFile.delete();
@@ -147,7 +144,7 @@ class ServerProcess implements Runnable {
 
             if (miss) {
                 ArrayList<Integer> indices = new ArrayList<>();
-                for (int i = 1; i < 6; i++) {
+                for (int i = 1; i < Fichier.MAX_ARCHIVE; i++) {
                     Fichier oldFile = file.getArchive(i);
                     if (oldFile == null) {
                         indices.add(i);
@@ -169,17 +166,16 @@ class ServerProcess implements Runnable {
     }
 
     /**
-	 *  \fn communicate(Commandes op)
-	 *  \brief Définition de la méthode 'communicate'
-	 *  
-	 *  Cette fonction permet de retourner un booleen qui signifie si la commande saisie par l'utilisateur du serveur est 'BYE'.
-	 *  Elle initialise un booleen 'res' à false et effectue une condition 'switch-case' pour évaluer chaque cas possible d'opérations.
-	 *  Si l'opération (qui correspond à une commande) est un 'BYE' alors le booléen devient true et en retourne le résultat.
-	 *  
-	 *  \param op : Commande qui correspond à une opération de l'utilisateur du serveur.
-	 *  \return La valeur du booléen 'res' qui signifie s'il faut arreter le serveur.
-	 *  
-	 * */
+     * \fn communicate(Commandes op)
+     * \brief Définition de la méthode 'communicate'
+     * <p>
+     * Cette fonction permet de retourner un booleen qui signifie si la commande saisie par l'utilisateur du serveur est 'BYE'.
+     * Elle initialise un booleen 'res' à false et effectue une condition 'switch-case' pour évaluer chaque cas possible d'opérations.
+     * Si l'opération (qui correspond à une commande) est un 'BYE' alors le booléen devient true et en retourne le résultat.
+     * <p>
+     * \param op : Commande qui correspond à une opération de l'utilisateur du serveur.
+     * \return La valeur du booléen 'res' qui signifie s'il faut arreter le serveur.
+     */
     private static boolean communicate(Commandes op) {
         boolean res = false;
 
@@ -242,21 +238,20 @@ class ServerProcess implements Runnable {
 /**
  * \class Server
  * \brief Classe representant un serveur.
- *
- *  La classe contient une boucle principale (main) qui executera le programme.
+ * <p>
+ * La classe contient une boucle principale (main) qui executera le programme.
  */
 public class Server {
-	
-	/**
-	 *  \fn launch(int port)
-	 *  \brief Définition de la méthode 'launch'
-	 *  
-	 *  Cette classe permet de lancer le serveur sur l'adresse local de la machine et attend une connexion d'un client.
-	 *  Lorsque ce client se connecte au serveur, un thread est lancé pour ensuite lancer la fonction 'run' de la classe 'ServerProcess'.
-	 *  
-	 *  \param port : Entier correspondant au port qui sera utilisé lors de la connection entre le serveur et le client.
-	 *  
-	 * */
+
+    /**
+     * \fn launch(int port)
+     * \brief Définition de la méthode 'launch'
+     * <p>
+     * Cette classe permet de lancer le serveur sur l'adresse local de la machine et attend une connexion d'un client.
+     * Lorsque ce client se connecte au serveur, un thread est lancé pour ensuite lancer la fonction 'run' de la classe 'ServerProcess'.
+     * <p>
+     * \param port : Entier correspondant au port qui sera utilisé lors de la connection entre le serveur et le client.
+     */
     static public void launch(int port) {
         try {
             ServerSocket listen_socket;
@@ -282,15 +277,14 @@ public class Server {
     }
 
     /**
-	 *  \fn main(String[] args)
-	 *  \brief Fonction principale
-	 *  
-	 *  Cette fonction est la fonction principale qui sera executé au lancement du programme.
-	 *  Elle appelle la fonction 'launch' après avoir verifier qu'il n'y avait pas d'arguments.
-	 *
-	 *  \param args : Arguments du programme
-	 *  
-	 * */
+     * \fn main(String[] args)
+     * \brief Fonction principale
+     * <p>
+     * Cette fonction est la fonction principale qui sera executé au lancement du programme.
+     * Elle appelle la fonction 'launch' après avoir verifier qu'il n'y avait pas d'arguments.
+     * <p>
+     * \param args : Arguments du programme
+     */
     public static void main(String[] args) {
         if (args.length > 0) {
             System.err.println("Usage: java " + Server.class.getName());
