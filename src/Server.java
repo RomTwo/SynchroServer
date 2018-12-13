@@ -222,25 +222,10 @@ class ServerProcess implements Runnable {
             case ARCHCOUNT:
                 res = false;
                 break;
-            case SRC:
-                res = false;
-                break;
-            case DEST:
-                res = false;
-                break;
             case SENDALL:
                 res = false;
                 break;
             case RECVALL:
-                res = false;
-                break;
-            case CREATE:
-                res = false;
-                break;
-            case LOAD:
-                res = false;
-                break;
-            case EDIT:
                 res = false;
                 break;
             case HELP:
