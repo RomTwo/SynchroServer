@@ -165,6 +165,27 @@ class ServerProcess implements Runnable {
         Files.copy(currentPath, currentPath.resolveSibling(name));
     }
 
+    public void sendFile() {
+
+    }
+
+    public void recvFile() {
+
+    }
+
+    public void recvAll() {
+
+    }
+
+    public void sendAll() {
+
+    }
+
+    public void scan() {
+
+    }
+
+
     /**
      * \fn communicate(Commandes op)
      * \brief Définition de la méthode 'communicate'
