@@ -1,5 +1,5 @@
-/**
- * \file Server.java
+package Server; /**
+ * \file Server.Server.java
  * \package Programme
  * \author Groupe1
  * \version 1
@@ -23,7 +23,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 
 /**
- * \class ServerProcess
+ * \class Server.ServerProcess
  * \brief Classe representant le serveur.
  * <p>
  * La classe permet d'effectuer des actions pour un client.
@@ -35,7 +35,7 @@ class ServerProcess implements Runnable {
     private Socket client_socket;/**< Déclaration de la variable 'client_socket' qui correspond au socket pour le client courant. */
 
     /**
-     * \fn ServerProcess(Socket socket)
+     * \fn Server.ServerProcess(Socket socket)
      * \brief Constructeur
      * <p>
      * Ce contructeur du processus du serveur permet d'initialiser la valeur de la socket client.
@@ -84,7 +84,7 @@ class ServerProcess implements Runnable {
             System.out.println("File " + file
                     + " downloaded (" + current + " bytes read)");
             System.out.println("Envoi de la reponse au client");
-            String reponseMessage = "Fichier bien reçu";
+            String reponseMessage = "Server.Fichier bien reçu";
             byte[] reponse = reponseMessage.getBytes("UTF-8");//Encodage de la reponse en UTF-8
             output.write(reponse);//Ecriture du buffer sur la sortie
             System.out.println("Message envoye !");*/
@@ -127,7 +127,7 @@ class ServerProcess implements Runnable {
     }
 
     /**
-     * \fn archive(Fichier file)
+     * \fn archive(Server.Fichier file)
      * \brief Définition de la méthode 'archive'
      * <p>
      * Cette fonction permet d'archiver un fichier passé en paramètre.
@@ -193,7 +193,7 @@ class ServerProcess implements Runnable {
         System.out.println("Dans la fonction sendFile...");
         System.out.println(buffer.length);
 
-        /*Fichier test = new Fichier("essais.txt");
+        /*Server.Fichier test = new Server.Fichier("essais.txt");
         try {
             FileOutputStream fos = new FileOutputStream(test);
             fos.write(buffer);
@@ -227,7 +227,7 @@ class ServerProcess implements Runnable {
 
 
     /**
-     * \fn communicate(Commandes op)
+     * \fn communicate(Server.Commandes op)
      * \brief Définition de la méthode 'communicate'
      * <p>
      * Cette fonction permet de retourner un booleen qui signifie si la commande saisie par l'utilisateur du serveur est 'BYE'.
@@ -284,7 +284,7 @@ class ServerProcess implements Runnable {
 }
 
 /**
- * \class Server
+ * \class Server.Server
  * \brief Classe representant un serveur.
  * <p>
  * La classe contient une boucle principale (main) qui executera le programme.
@@ -296,7 +296,7 @@ public class Server {
      * \brief Définition de la méthode 'launch'
      * <p>
      * Cette classe permet de lancer le serveur sur l'adresse local de la machine et attend une connexion d'un client.
-     * Lorsque ce client se connecte au serveur, un thread est lancé pour ensuite lancer la fonction 'run' de la classe 'ServerProcess'.
+     * Lorsque ce client se connecte au serveur, un thread est lancé pour ensuite lancer la fonction 'run' de la classe 'Server.ServerProcess'.
      * <p>
      * \param port : Entier correspondant au port qui sera utilisé lors de la connection entre le serveur et le client.
      */
@@ -308,7 +308,7 @@ public class Server {
             System.out.println(iplocal);
             // Create socket to get requests for all clients
             listen_socket = new ServerSocket(port, 10, iplocal);
-            System.out.println("Server is waiting...");
+            System.out.println("Server.Server is waiting...");
             // Infinite loop to get requests sequentially
             while (true) {
                 Socket socket;

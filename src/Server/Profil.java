@@ -1,5 +1,5 @@
-/**
- * \file Profil.java
+package Server; /**
+ * \file Server.Profil.java
  * \package Programme
  * \author Groupe1
  * \version 1
@@ -11,7 +11,7 @@
 import java.util.ArrayList;
 
 /**
- * \class Profil
+ * \class Server.Profil
  * \brief Classe representant le profil.
  * <p>
  * La classe permet de définir et de gérer un profil avec différents attributs, constructueur et méthodes.
@@ -55,7 +55,7 @@ public class Profil {
 
 
     /**
-     * \fn Profil(String name, String ipSrc, String ipDest, String dirSrc, String dirDest)
+     * \fn Server.Profil(String name, String ipSrc, String ipDest, String dirSrc, String dirDest)
      * \brief Constructeur
      * <p>
      * Ce contructeur de la classe profil permet d'initatiliser les différentes valeurs des attributs de la classe avec les attributs passés en paramètres.

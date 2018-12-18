@@ -1,5 +1,5 @@
-/**
- * \file Fichier.java
+package Server; /**
+ * \file Server.Fichier.java
  * \package Programme
  * \author Groupe1
  * \version 1
@@ -12,7 +12,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 
 /**
- * \class Fichier
+ * \class Server.Fichier
  * \brief Classe representant un fichier.
  * <p>
  * La classe permet de définir et de gérer un fichier avec différents attributs, constructueur et méthodes.
@@ -26,12 +26,12 @@ public class Fichier extends File {
     public static int MAX_ARCHIVE = 5;
 
     /**
-     * \fn Fichier(String name)
+     * \fn Server.Fichier(String name)
      * \brief Constructeur
      * <p>
      * Ce contructeur de la classe fichier permet de créer un objet avec l'appel du constructeur parent qui est le constructeur de la classe File.
      * Le constructeur de la classe 'File' prend un nom de chemin (pathfile).
-     * Il faut donc avoir comme paramètre un nom de chemin pour le constructeur de la classe 'Fichier'.
+     * Il faut donc avoir comme paramètre un nom de chemin pour le constructeur de la classe 'Server.Fichier'.
      * <p>
      * \param name : chaine de caractère qui est le nom du fichier
      */

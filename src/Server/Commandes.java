@@ -1,5 +1,7 @@
+package Server;
+
 /**
- * \enum Commandes
+ * \enum Server.Commandes
  * \brief Enumération representant des commandes.
  * <p>
  * Cette enumération permet de représenter plusieurs commandes qui seront utiles au client pour faire différentes actions.
@@ -43,10 +45,10 @@ public enum Commandes {
     private String name;/**< Déclaration de la variable 'name' qui correspond au nom de la commande. */
 
     /**
-     * \fn Commandes(String name)
+     * \fn Server.Commandes(String name)
      * \brief Constructeur
      * <p>
-     * Ce contructeur de l'énumération 'Commandes' permet de définir et d'associer un nom passé en paramètre à une commande.
+     * Ce contructeur de l'énumération 'Server.Commandes' permet de définir et d'associer un nom passé en paramètre à une commande.
      * <p>
      * \param name : chaine de caractère qui est le nom de la commande.
      */
