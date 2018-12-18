@@ -1,22 +1,45 @@
-package Server;
+import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import ../src/Server/Server.java;
 
-import static org.junit.Assert.*;
+class ServerTest {
 
-public class ServerTest {
+    Socket s;
+    Fichier f;
 
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() throws Exception {
+        f = new Fichier("test_fichier");
     }
 
-    @After
-    public void tearDown() {
+    @AfterEach
+    void tearDown() throws Exception {
+        f = null;
     }
 
     @Test
-    public void launch() {
+    void testArchive1() throws Exception{
+        if (f.nbArchive() < 5) {
+            assert(s.archive(f) == "test_fichier_"+f.nbArchive()+1+"."+f.getExtension());
+        }
+        else if (f.nbArchive() == 5){
+            assert(s.archive(f) == "test_fichier_5."+f.getExtension());
+        }
     }
+
+    @Test
+    void testCommuniate() throws Exception{
+        byte[] buffer b = null;
+        assert(s.communicate(SEND, b) == false);
+        assert(s.communicate(RECV, b) == false);
+        assert(s.communicate(SCAN, b) == false);
+        assert(s.communicate(STOPSCAN, b) == false);
+        assert(s.communicate(ARCHIVE, b) == false);
+        assert(s.communicate(TIME, b) == false);
+
+    }
+
 }
