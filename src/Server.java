@@ -181,7 +181,15 @@ class ServerProcess implements Runnable {
         Files.copy(currentPath, currentPath.resolveSibling(name));
     }
 
-    public void sendFile(byte[] buffer) throws IOException {
+    public void sendFile(byte[] buffer) {
+
+        System.out.println("Dans la fonction recvFile...");
+        System.out.println(buffer.length);
+
+    }
+
+    public void recvFile(byte[] buffer) throws IOException {
+
         System.out.println("Dans la fonction sendFile...");
         System.out.println(buffer.length);
 
@@ -202,12 +210,6 @@ class ServerProcess implements Runnable {
 
         bos.write(buffer, 0, buffer.length);
         bos.flush();
-
-    }
-
-    public void recvFile(byte[] buffer) {
-        System.out.println("Dans la fonction recvFile...");
-        System.out.println(buffer.length);
 
     }
 
@@ -241,11 +243,11 @@ class ServerProcess implements Runnable {
         switch (op) {
             case SEND:
                 res = false;
-                sendFile(buffer);
+                recvFile(buffer);
                 break;
             case RECV:
                 res = false;
-                recvFile(buffer);
+                sendFile(buffer);
                 break;
             case SCAN:
                 res = false;
