@@ -8,14 +8,11 @@
  * Programme qui permet de gérer la partie 'serveur' de la synchronisation de fichier
  */
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -68,7 +65,7 @@ class ServerProcess implements Runnable {
             DataInputStream dataInputStream = new DataInputStream(input);
             DataOutputStream dataOutputStream = new DataOutputStream(output);
 
-            FileOutputStream fos = null;
+            /*FileOutputStream fos = null;
             BufferedOutputStream bos = null;
             int current = 0;
             byte[] buffer = new byte[512];
@@ -90,20 +87,39 @@ class ServerProcess implements Runnable {
             String reponseMessage = "Fichier bien reçu";
             byte[] reponse = reponseMessage.getBytes("UTF-8");//Encodage de la reponse en UTF-8
             output.write(reponse);//Ecriture du buffer sur la sortie
-            System.out.println("Message envoye !");
+            System.out.println("Message envoye !");*/
+
+            byte[] buffer = new byte[20];
+            int numbytes;
 
             boolean quit = false;
             Commandes op;
-            String recovery = "";
+            String recovery = null;
+            int taille;
 
             while (!quit) {
-                try {
-                    op = Commandes.getValueOf(recovery);
-                } catch (IllegalArgumentException e) {
-                    op = Commandes.HELP;
+                numbytes = input.read(buffer, 0, buffer.length);
+
+                if (recovery == null && numbytes < 20) {
+                    recovery = new String(buffer);
+                    String[] tab = recovery.split("/");
+                    recovery = tab[0];
+                    if (tab.length > 2) {
+                        taille = Integer.parseInt(tab[1]);
+                        buffer = new byte[taille];
+                    }
+                } else {
+                    try {
+                        op = Commandes.getValueOf(recovery);
+                    } catch (IllegalArgumentException e) {
+                        op = Commandes.HELP;
+                    }
+                    quit = communicate(op, buffer);
+                    recovery = null;
+                    buffer = new byte[20];
                 }
-                quit = communicate(op);
             }
+            this.client_socket.close();
 
         } catch (Exception e) {
             e.printStackTrace(System.err);
@@ -165,11 +181,33 @@ class ServerProcess implements Runnable {
         Files.copy(currentPath, currentPath.resolveSibling(name));
     }
 
-    public void sendFile() {
+    public void sendFile(byte[] buffer) throws IOException {
+        System.out.println("Dans la fonction sendFile...");
+        System.out.println(buffer.length);
+
+        /*Fichier test = new Fichier("essais.txt");
+        try {
+            FileOutputStream fos = new FileOutputStream(test);
+            fos.write(buffer);
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        FileOutputStream fos;
+        BufferedOutputStream bos;
+        String file = "test.png";
+        fos = new FileOutputStream(file);
+        bos = new BufferedOutputStream(fos);
+
+        bos.write(buffer, 0, buffer.length);
+        bos.flush();
 
     }
 
-    public void recvFile() {
+    public void recvFile(byte[] buffer) {
+        System.out.println("Dans la fonction recvFile...");
+        System.out.println(buffer.length);
 
     }
 
@@ -197,15 +235,17 @@ class ServerProcess implements Runnable {
      * \param op : Commande qui correspond à une opération de l'utilisateur du serveur.
      * \return La valeur du booléen 'res' qui signifie s'il faut arreter le serveur.
      */
-    private static boolean communicate(Commandes op) {
+    private boolean communicate(Commandes op, byte[] buffer) throws IOException {
         boolean res = false;
 
         switch (op) {
             case SEND:
                 res = false;
+                sendFile(buffer);
                 break;
             case RECV:
                 res = false;
+                recvFile(buffer);
                 break;
             case SCAN:
                 res = false;

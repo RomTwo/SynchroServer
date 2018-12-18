@@ -42,7 +42,7 @@ public class Profil {
      * < Déclaration de la variable 'dirDest' qui correspond au répertoire destination.
      */
     private String dirDest;
-    
+
     /**
      * < Déclaration de la liste de chaine de caractère 'exts' qui correspond à la liste des extensions acceptant la synchronisation.
      */
@@ -158,77 +158,5 @@ public class Profil {
      */
     public ArrayList<String> getExtsArchivable() {
         return extsArchivable;
-    }
-
-    /**
-     * \fn setIpSrc()
-     * \brief Définition de la méthode 'setIpSrc'
-     * <p>
-     * Cette fonction permet de modifier l'adresse source d'un profil.
-     * <p>
-     * \param ipSrc : Chaine de caractère qui correspond à la nouvelle adresse source.
-     */
-    public void setIpSrc(String ipSrc) {
-        this.ipSrc = ipSrc;
-    }
-
-    /**
-     * \fn setIpDest()
-     * \brief Définition de la méthode 'setIpDest'
-     * <p>
-     * Cette fonction permet de modifier l'adresse destination d'un profil.
-     * <p>
-     * \param ipDest : Chaine de caractère qui correspond à la nouvelle adresse destination.
-     */
-    public void setIpDest(String ipDest) {
-        this.ipDest = ipDest;
-    }
-
-    /**
-     * \fn setDirSrc()
-     * \brief Définition de la méthode 'setDirSrc'
-     * <p>
-     * Cette fonction permet de modifier le répertoire source d'un profil.
-     * <p>
-     * \param dirSrc : Chaine de caractère qui correspond au nouveau répertoire source.
-     */
-    public void setDirSrc(String dirSrc) {
-        this.dirSrc = dirSrc;
-    }
-
-    /**
-     * \fn setDirDest()
-     * \brief Définition de la méthode 'setDirDest'
-     * <p>
-     * Cette fonction permet de modifier le répertoire destination d'un profil.
-     * <p>
-     * \param dirDest : Chaine de caractère qui correspond au nouveau répertoire destination.
-     */
-    public void setDirDest(String dirDest) {
-        this.dirDest = dirDest;
-    }
-
-    /**
-     * \fn addExt()
-     * \brief Définition de la méthode 'addExt'
-     * <p>
-     * Cette fonction permet d'ajouter une extenstion à la liste de extension pour l'archivage.
-     * <p>
-     * \param ext : Chaine de caractère qui correspond à l'extension à ajouter.
-     */
-    public void addExt(String ext) {
-        this.extsArchivable.add(ext);
-    }
-
-    /**
-     * \fn removeExt()
-     * \brief Définition de la méthode 'removeExt'
-     * <p>
-     * Cette fonction permet de supprimer une extenstion à la liste de extension pour l'archivage.
-     * <p>
-     * \param ext : Chaine de caractère qui correspond à l'extension à supprimer.
-     */
-    public void removeExt(String ext) {
-        this.extsArchivable.remove(ext);
     }
 }
